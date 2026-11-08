@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 
-namespace WebApi.Tests;
+namespace WebApi.Tests.Infrastructure;
 
 public class ApiApplicationFactory : WebApplicationFactory<Program>
 {

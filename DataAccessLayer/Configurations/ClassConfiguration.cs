@@ -26,5 +26,14 @@ public class ClassConfiguration : IEntityTypeConfiguration<Class>
             .HasForeignKey(x => x.RoomId);
 
         builder.HasQueryFilter(x => !x.IsCancelled);
+
+        builder.HasIndex(x => x.RoomId);
+
+        // решение: частичные индексы повторяют фильтр и порядок расписания,
+        // чтобы страницы за период и по залу не требовали чтения всей истории.
+        builder.HasIndex(x => new { x.StartsAt, x.Id })
+            .HasFilter("NOT is_cancelled");
+        builder.HasIndex(x => new { x.RoomId, x.StartsAt, x.Id })
+            .HasFilter("NOT is_cancelled");
     }
 }

@@ -1,7 +1,7 @@
 using Npgsql;
 using StackExchange.Redis;
 
-namespace WebApi.Tests;
+namespace WebApi.Tests.Infrastructure;
 
 [TestClass]
 public static class TestDatabase

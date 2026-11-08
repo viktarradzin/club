@@ -76,6 +76,9 @@ public static class DatabaseSeeder
         await dbContext.Users.AddRangeAsync(users, ct);
         await dbContext.SaveChangesAsync(ct);
 
+        await dbContext.EnrollmentCardCacheVersions.AddRangeAsync(users.Select(user =>
+            new EnrollmentCardCacheVersion { Id = user.Id, Version = 0 }), ct);
+
         var passes = new List<Pass>();
 
         for (var i = 0; i < users.Count; i++)
@@ -160,7 +163,7 @@ public static class DatabaseSeeder
                 pass.RemainingVisits -= seats;
             }
 
-            enrollments.Add(new Enrollment
+            var enrollment = new Enrollment
             {
                 UserId = user.Id,
                 ClassId = scheduledClass.Id,
@@ -170,7 +173,17 @@ public static class DatabaseSeeder
                 CancelledAt = cancelled
                     ? CancelledBetween(createdAt, scheduledClass.StartsAt, random)
                     : null
-            });
+            };
+
+            if (cancelled)
+            {
+                enrollment.RefundedVisits = scheduledClass.IsCancelled ||
+                                            scheduledClass.StartsAt - enrollment.CancelledAt!.Value >= TimeSpan.FromHours(2)
+                    ? seats
+                    : 0;
+            }
+
+            enrollments.Add(enrollment);
         }
 
         var freeSeatsTargets = new[] { 0, 0, 1, 1, 2, 2 };

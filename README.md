@@ -50,3 +50,5 @@ dotnet test
 
 Вход — `POST /auth/login` с телом `{ "email": "...", "password": "..." }`,
 в ответе `accessToken`.
+
+Принятые решения, их причины и ограничения описаны в [Docs/DECISIONS.md](Docs/DECISIONS.md).

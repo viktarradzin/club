@@ -18,7 +18,14 @@ public class ClubDbContext : DbContext
 
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
 
+    public DbSet<WaitlistEntry> WaitlistEntries => Set<WaitlistEntry>();
+
     public DbSet<Pass> Passes => Set<Pass>();
+
+    public DbSet<IdempotencyRequest> IdempotencyRequests => Set<IdempotencyRequest>();
+
+    public DbSet<EnrollmentCardCacheVersion> EnrollmentCardCacheVersions =>
+        Set<EnrollmentCardCacheVersion>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
